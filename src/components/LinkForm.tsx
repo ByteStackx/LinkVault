@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { type Link } from "../types";
+import { TextInput } from "./TextInput";
+import { Button } from "./Button";
 
 type LinkFormProps = {
   link?: Link | null;
   onSave: (link: Link) => void;
-  onCancel: () => void; 
+  onCancel: () => void;
 };
 
 const LinkForm: React.FC<LinkFormProps> = ({ link, onSave, onCancel }) => {
@@ -29,7 +31,6 @@ const LinkForm: React.FC<LinkFormProps> = ({ link, onSave, onCancel }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     const id = link?.id || Date.now().toString();
 
     onSave({
@@ -40,7 +41,7 @@ const LinkForm: React.FC<LinkFormProps> = ({ link, onSave, onCancel }) => {
       tags: tags
         .split(",")
         .map((t) => t.trim())
-        .filter((t) => t)
+        .filter((t) => t),
     });
 
     if (!link) {
@@ -53,35 +54,48 @@ const LinkForm: React.FC<LinkFormProps> = ({ link, onSave, onCancel }) => {
 
   return (
     <form className="link-form" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Title"
+      <TextInput
+        label="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        required
+        name="title"
+        id="title"
       />
-      <input
-        type="url"
-        placeholder="URL"
+
+      <TextInput
+        label="URL"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        required
+        name="url"
+        id="url"
       />
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Tags (comma separated)"
+
+      <div style={{ marginBottom: "1rem" }}>
+        <label htmlFor="description">Description</label>
+        <textarea
+          id="description"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+
+      <TextInput
+        label="Tags (comma separated)"
         value={tags}
         onChange={(e) => setTags(e.target.value)}
+        name="tags"
+        id="tags"
       />
-      <button type="submit">{link ? "Update Link" : "Add Link"}</button>
-      <button type="button" onClick={onCancel} style={{ marginLeft: "0.5rem" }}>
-        Cancel
-      </button>
+
+      <div style={{ display: "flex", gap: "0.5rem" }}>
+        <Button type="submit">
+          {link ? "Update Link" : "Add Link"}
+        </Button>
+        <Button type="button" onClick={onCancel}>
+          Cancel
+        </Button>
+      </div>
     </form>
   );
 };

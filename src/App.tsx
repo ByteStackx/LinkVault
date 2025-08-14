@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
-import LinkForm from "./components/LinkForm";
-import LinkList from "./components/LinkList";
+import { LinkListContainer } from "./containers/LinkListContainer";
+import { LinkFormContainer } from "./containers/LinkFormContainer";
 import { type Link } from "./types";
 import "./App.css";
+import Footer from "./components/Footer";
 
 function App() {
   const [links, setLinks] = useState<Link[]>(() => {
@@ -11,42 +12,39 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
   const [searchQuery, setSearchQuery] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [editingLink, setEditingLink] = useState<Link | null>(null);
 
-  // Persist links to localStorage whenever links change
   useEffect(() => {
     localStorage.setItem("links", JSON.stringify(links));
   }, [links]);
 
-  // Add or update link
-  const handleSaveLink = (link: Link) => {
-    let updatedLinks: Link[];
-    if (editingLink) {
-      // Update existing link
-      updatedLinks = links.map((l) => (l.id === link.id ? link : l));
-      setEditingLink(null);
-    } else {
-      // Add new link
-      updatedLinks = [...links, link];
-    }
+  const [editingLink, setEditingLink] = useState<Link | null>(null);
+  const [showForm, setShowForm] = useState(false);
 
-    setLinks(updatedLinks);
-    setShowForm(false);
+  const handleEditLink = (link: Link) => {
+  setEditingLink(link); // populate the form
+  setShowForm(true);    // show the form
   };
 
+
+  const handleSaveLink = (link: Link) => {
+    setLinks(prev =>
+      prev.some(l => l.id === link.id)
+        ? prev.map(l => (l.id === link.id ? link : l))
+        : [...prev, link]
+    );
+  };
 
   const handleDeleteLink = (id: string) => {
-    setLinks((prev) => prev.filter((l) => l.id !== id));
+    setLinks(prev => prev.filter(l => l.id !== id));
   };
 
-  const filteredLinks = links.filter((link) => {
+  const filteredLinks = links.filter(link => {
     const query = searchQuery.toLowerCase();
     return (
       link.title.toLowerCase().includes(query) ||
       link.description.toLowerCase().includes(query) ||
       link.url.toLowerCase().includes(query) ||
-      (link.tags && link.tags.some((tag) => tag.toLowerCase().includes(query)))
+      (link.tags && link.tags.some(tag => tag.toLowerCase().includes(query)))
     );
   });
 
@@ -56,36 +54,24 @@ function App() {
 
       <main className="main-content">
         <section className="form-section">
-          <button
-            className="add-btn"
-            onClick={() => {
-              setShowForm((prev) => !prev);
-              setEditingLink(null);
-            }}
-          >
-            {showForm ? "Cancel" : "Add New Link"}
-          </button>
+          <LinkFormContainer
+          onSave={handleSaveLink}
+          editingLink={editingLink}
+          showForm={showForm}
+          onClose={() => setShowForm(false)}
+        />
 
-          {showForm && (
-            <LinkForm
-              link={editingLink}
-              onSave={handleSaveLink}
-              onCancel={() => setShowForm(false)}
-            />
-          )}
         </section>
 
         <section className="list-section">
-          <LinkList
+          <LinkListContainer
             links={filteredLinks}
-            onEdit={(link) => {
-              setEditingLink(link);
-              setShowForm(true);
-            }}
+            onEdit={() => {}}
             onDelete={handleDeleteLink}
           />
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

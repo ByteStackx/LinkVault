@@ -1,4 +1,6 @@
+// LinkCard.tsx
 import { type Link } from "../types";
+import { Button } from "./Button";
 
 type LinkCardProps = {
   link: Link;
@@ -28,18 +30,16 @@ const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete }) => {
       )}
 
       <div className="card-actions">
-        {onEdit && <button className="edit-btn" onClick={() => onEdit(link)}>Edit</button>}
-        {onDelete && <button className="delete-btn" onClick={() => {
-            const confirmed = window.confirm(
-                `Are you sure you want to delete "${link.title}"?`
-            );
-            if (confirmed) {
-                onDelete(link.id);
-            }
-      }}
-    >
-      Delete
-    </button>}
+        {onEdit && (
+          <Button className="edit-btn" onClick={() => onEdit(link)}>
+            Edit
+          </Button>
+        )}
+        {onDelete && (
+          <Button className="delete-btn" onClick={() => onDelete(link.id)}>
+            Delete
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../assets/chain.png";
+import { TextInput } from "./TextInput";
 
 type HeaderProps = {
   search: string;
@@ -13,12 +14,15 @@ const Header: React.FC<HeaderProps> = ({ search, setSearch }) => {
         <img src={logo} alt="Logo" className="logo" />
         <h1>Link Vault</h1>
       </div>
-      <input
-        type="text"
-        className="search-input"
-        placeholder="Search links..."
+
+      <TextInput
+        label="Search"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        name="search"
+        id="search"
+        className="search-input"
+        placeholder="search by name, url, description, tags..."
       />
     </header>
   );

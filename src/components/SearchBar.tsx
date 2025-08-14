@@ -1,16 +1,21 @@
+import React from "react";
+import { TextInput } from "./TextInput";
+
 type SearchBarProps = {
   onSearch: (query: string) => void;
 };
 
-function SearchBar({ onSearch }: SearchBarProps) {
+export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   return (
-    <input
-      type="text"
-      className="search-input"
-      placeholder="Search by title, description, tags, or URL..."
+    <TextInput
+      label="Search links"
+      value=""
       onChange={(e) => onSearch(e.target.value)}
+      name="search"
+      id="search"
+      style={{ width: "100%" }}
     />
   );
-}
+};
 
-export default SearchBar
+export default SearchBar;
