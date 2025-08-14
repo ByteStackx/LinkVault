@@ -9,6 +9,7 @@ type LinkCardProps = {
 };
 
 const LinkCard: React.FC<LinkCardProps> = ({ link, onEdit, onDelete }) => {
+  
   return (
     <div className="link-card">
       <h3>
