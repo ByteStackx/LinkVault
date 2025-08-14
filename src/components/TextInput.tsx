@@ -7,7 +7,7 @@ type TextInputProps = {
   error?: string;
   name?: string;
   className?: string;
-  placeholder?: string; // <-- add this
+  placeholder?: string; 
 };
 
 export const TextInput: React.FC<TextInputProps> = ({
@@ -34,7 +34,7 @@ export const TextInput: React.FC<TextInputProps> = ({
         value={value}
         onChange={onChange}
         className={`input ${className ?? ""}`}
-        placeholder={placeholder} // <-- pass it here
+        placeholder={placeholder} 
       />
       {error && <span className="input-error">{error}</span>}
     </div>

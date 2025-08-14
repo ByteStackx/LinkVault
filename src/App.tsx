@@ -17,13 +17,13 @@ function App() {
     localStorage.setItem("links", JSON.stringify(links));
   }, [links]);
 
-  const [editingLink, setEditingLink] = useState<Link | null>(null);
+  const [editingLink, _setEditingLink] = useState<Link | null>(null);
   const [showForm, setShowForm] = useState(false);
 
-  const handleEditLink = (link: Link) => {
-  setEditingLink(link); // populate the form
-  setShowForm(true);    // show the form
-  };
+  // const handleEditLink = (link: Link) => {
+  // setEditingLink(link); // populate the form
+  // setShowForm(true);    // show the form
+  // };
 
 
   const handleSaveLink = (link: Link) => {
