@@ -17,7 +17,7 @@ function App() {
     localStorage.setItem("links", JSON.stringify(links));
   }, [links]);
 
-  const [editingLink, _setEditingLink] = useState<Link | null>(null);
+  const [editingLink, setEditingLink] = useState<Link | null>(null);
   const [showForm, setShowForm] = useState(false);
 
   // const handleEditLink = (link: Link) => {
@@ -65,10 +65,13 @@ function App() {
 
         <section className="list-section">
           <LinkListContainer
-            links={filteredLinks}
-            onEdit={() => {}}
-            onDelete={handleDeleteLink}
-          />
+          links={filteredLinks}
+          onEdit={(link) => {
+            setEditingLink(link); // populate form with selected link
+            setShowForm(true);     // show the form
+          }}
+          onDelete={handleDeleteLink}
+        />
         </section>
       </main>
       <Footer />
